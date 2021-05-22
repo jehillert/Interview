@@ -1,25 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import useApiResult from './useApiResult';
 import axios from 'axios';
 
 const url = 'https://pos-cron-absolute.herokuapp.com/customer/surveys';
 const resultsPerPage = 10;
 
 function App() {
-    const [allResults, setAllResults] = useState([]);
+    const allResults = useApiResult();
     const [page, setPage] = useState(null);
     const [currentPage, setCurrentPage] = useState([]);
-
-    useEffect(() => {
-        if (!allResults.length) {
-            axios.get(url).then(({ data }) => {
-                setAllResults(data);
-                setPage(0);
-            });
-        }
-    }, []);
 
     useEffect(() => {
         if (allResults.length) {
@@ -39,44 +30,18 @@ function App() {
     }, [allResults, page]);
 
     // TODO: remember to set keys. Maybe set different colors for different rows
-    // const row = Object.keys(record).map(field => (<Col><Text>field</Text></Col>))
-    const table = currentPage.map(
-        ({ ID, Review, Rating, ProviderEmail, FirstName, LastName, ReviewCompletedTimeStamp }, index) => (
-            <Grid>
-                <Row>
-                    <Col>
-                        <Text>{ID}</Text>
-                    </Col>
-                    <Col>
-                        <Text>{Review}</Text>
-                    </Col>
-                    <Col>
-                        <Text>{Rating}</Text>
-                    </Col>
-                    <Col>
-                        <Text>{ProviderEmail}</Text>
-                    </Col>
-                    <Col>
-                        <Text>{FirstName}</Text>
-                    </Col>
-                    <Col>
-                        <Text>{LastName}</Text>
-                    </Col>
-                    <Col>
-                        <Text>{ReviewCompletedTimeStamp}</Text>
-                    </Col>
-                </Row>
-            </Grid>
-        ),
-    );
-
-    console.log(table);
+    const table = currentPage.map((record, index) => {
+        const cells = Object.keys(record).map((field, index) => (
+            <Col key={index}>
+                <Text>{record[field]}</Text>
+            </Col>
+        ));
+        return <Row key={record.ID}>{cells}</Row>;
+    });
 
     return (
         <View style={styles.container}>
-            <Text>{Array.isArray([]) && 'hello'}</Text>
-            {table}
-            <StatusBar style="auto" />
+            <Grid>{table}</Grid>
         </View>
     );
 }
