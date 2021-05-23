@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import useApiResult from './useApiResult';
-import Table from './Table';
+import useApiResult from './src/useApiResult';
+import Table from './src/Table';
 
 const S = {};
 
@@ -15,6 +15,7 @@ S.AppContainer = styled.View `
 
 function App() {
     const resultsPerPage = 10;
+    const fields = ['FirstName', 'LastName', 'ProviderEmail', 'Review', 'Rating'];
     const allResults = useApiResult();
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState([]);
@@ -31,6 +32,7 @@ function App() {
 
     return (
         <S.AppContainer>
+            {/* <Table records={currentPage} fields={fields} /> */}
             <Table records={currentPage} />
         </S.AppContainer>
     );
