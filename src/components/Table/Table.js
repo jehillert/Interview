@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import styled from 'styled-components/native';
@@ -7,8 +8,19 @@ import TableHeader from './TableHeader';
 
 const S = {};
 
+S.Grid = styled(Grid)`
+`;
+
+S.HeaderGrid = styled(S.Grid)`
+    max-height: 80px;
+`;
+
+
+S.ColumnHeaderGrid = styled(S.Grid)`
+    max-height: 80px;
+`;
+
 S.Col = styled(Col)`
-    padding: 20px;
     background-color: lightgreen;
 `;
 
@@ -40,13 +52,26 @@ function Table({ fields: specifiedFields, includeHeader, records, userData }) {
     });
 
     return (
-        <Grid>
+        <>
+        <S.HeaderGrid>
             <TableHeader userData={userData} />
-            {shouldBeColHeaders ? (<HeadersOfColumns fields={fields} />) : null}
-            {table}
-        </Grid>
+        </S.HeaderGrid>
+        <S.ColumnHeaderGrid>
+            {shouldBeColHeaders ? <HeadersOfColumns fields={fields} /> : null}
+        </S.ColumnHeaderGrid>
+        <S.Grid>
+            <ScrollView styles={styles.scrollView}>{table}</ScrollView>
+        </S.Grid>
+        </>
     );
 }
+
+const styles = StyleSheet.create({
+    scrollView: {
+        backgroundColor: 'pink',
+        marginHorizontal: 20,
+    },
+});
 
 Table.defaultProps = {
     fields: null,

@@ -1,26 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components/native';
+import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import useApiResult from './src/hooks/useApiResult';
 import Table from './src/components/Table';
-import {
-    USER_FIRSTNAME as firstName,
-    USER_USERNAME as username
-} from '@env';
+import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
+import { defaultTableFields } from './src/constants';
 
 const S = {};
-
-S.AppContainer = styled.View `
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 50px;
-    border: 2px lightgrey dotted;
-`;
 
 function App() {
     const userData = { firstName, username };
     const resultsPerPage = 10;
-    const fields = ['FirstName', 'LastName', 'ProviderEmail', 'Review', 'Rating'];
     const allResults = useApiResult();
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState([]);
@@ -36,11 +25,17 @@ function App() {
     }, [allResults, page]);
 
     return (
-        <S.AppContainer>
-            {/* <Table records={currentPage} fields={fields} /> */}
-            <Table records={currentPage} userData={userData} />
-        </S.AppContainer>
+        <SafeAreaView style={styles.container}>
+            <Table records={currentPage} fields={defaultTableFields} userData={userData} />
+        </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
+});
 
 export default App;

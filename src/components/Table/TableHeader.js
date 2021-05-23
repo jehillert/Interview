@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Row } from 'react-native-easy-grid';
 import TextAvatar from 'react-native-text-avatar';
