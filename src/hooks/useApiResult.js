@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-// const url = 'https://pos-cron-absolute.herokuapp.com/customer/surveys';
-const url = 'https://pos-cron-absolute.herokuapp.com/customer/surveys';
+import { URL_CUSTOMER_SURVEYS as baseUrl } from '@env';
 
 function useApiResult() {
     const [allResults, setAllResults] = useState([]);
 
     useEffect(() => {
         if (!allResults.length) {
-            axios.get(url).then(({ data }) => {
+            axios.get(baseUrl).then(({ data }) => {
                 setAllResults(data);
             });
         }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import styled from 'styled-components/native';
 import HeadersOfColumns from './ColumnHeaders';
+import TableHeader from './TableHeader';
 
 const S = {};
 
@@ -24,7 +25,7 @@ S.HeaderText = styled(S.Text)`
     color: white;
 `;
 
-function Table({ fields: specifiedFields, includeHeader, records }) {
+function Table({ fields: specifiedFields, includeHeader, records, userData }) {
     const shouldUseRecordFieldsAsHeaders = !specifiedFields && records[0];
     const fields = shouldUseRecordFieldsAsHeaders ? Object.keys(records[0]) : specifiedFields;
     const shouldBeColHeaders = fields && includeHeader;
@@ -38,9 +39,9 @@ function Table({ fields: specifiedFields, includeHeader, records }) {
         return <Row key={record.ID}>{cells}</Row>;
     });
 
-
     return (
         <Grid>
+            <TableHeader userData={userData} />
             {shouldBeColHeaders ? (<HeadersOfColumns fields={fields} />) : null}
             {table}
         </Grid>
@@ -56,6 +57,7 @@ Table.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.string),
     includeHeader: PropTypes.bool,
     records: PropTypes.arrayOf(PropTypes.object).isRequired,
+    userData: PropTypes.object.isRequired,
 };
 
 export default Table;

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import useApiResult from './src/useApiResult';
-import Table from './src/Table';
+import useApiResult from './src/hooks/useApiResult';
+import Table from './src/components/Table';
+import {
+    USER_FIRSTNAME as firstName,
+    USER_USERNAME as username
+} from '@env';
 
 const S = {};
 
@@ -14,6 +18,7 @@ S.AppContainer = styled.View `
 `;
 
 function App() {
+    const userData = { firstName, username };
     const resultsPerPage = 10;
     const fields = ['FirstName', 'LastName', 'ProviderEmail', 'Review', 'Rating'];
     const allResults = useApiResult();
@@ -33,7 +38,7 @@ function App() {
     return (
         <S.AppContainer>
             {/* <Table records={currentPage} fields={fields} /> */}
-            <Table records={currentPage} />
+            <Table records={currentPage} userData={userData} />
         </S.AppContainer>
     );
 }
