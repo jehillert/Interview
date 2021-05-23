@@ -5,30 +5,33 @@ import styled from 'styled-components/native';
 
 const S = {};
 
-S.HeaderCol = styled(Col)`
+S.ColumnHeaderGrid = styled(Grid)`
+    max-height: 80px;
+`;
+
+S.ColumnHeaderCol = styled(Col)`
     padding: 20px;
     background-color: green;
 `;
 
-S.HeaderText = styled.Text`
+S.ColumnHeaderText = styled.Text`
     font-weight: bold;
     color: white;
 `;
 
 function ColumnHeaders({ fields }) {
-
     return (
-        <Grid>
+        <S.ColumnHeaderGrid>
             {fields ? (
                 <Row>
                     {fields.map(field => (
-                        <S.HeaderCol key={`${field}-header`}>
-                            <S.HeaderText>{field}</S.HeaderText>
-                        </S.HeaderCol>
+                        <S.ColumnHeaderCol key={`${field}-header`}>
+                            <S.ColumnHeaderText>{field}</S.ColumnHeaderText>
+                        </S.ColumnHeaderCol>
                     ))}
                 </Row>
             ) : null}
-        </Grid>
+        </S.ColumnHeaderGrid>
     );
 }
 
