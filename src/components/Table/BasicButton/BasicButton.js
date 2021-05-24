@@ -6,13 +6,13 @@ const S = {};
 
 S.TouchableOpacity = styled.TouchableOpacity`
     flex: 1;
-    height: 70px;
-    margin: 15px;
+    height: 40px;
+    margin: 1.5px 3px;
     background: ${({ bgColor }) => (bgColor ? bgColor : '#025331')};
 `;
 
 S.Text = styled.Text`
-    font-size: 18px;
+    font-size: 14px;
     color: ${({ fgColor }) => (fgColor ? fgColor : 'white')};
     margin: auto;
 `;

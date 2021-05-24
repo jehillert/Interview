@@ -45,14 +45,14 @@ function App() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <S.View>
-                <BasicButton onPress={handleToggledDataPress}>Toggle Data</BasicButton>
-            </S.View>
+            <Table records={displayedRecords} fields={surveyTableFields} keyField="ID" userData={userData} />
             <S.View>
                 <BasicButton onPress={handlePrevious}>previous</BasicButton>
                 <BasicButton onPress={handleNext}>next</BasicButton>
             </S.View>
-            <Table records={displayedRecords} fields={surveyTableFields} keyField="ID" userData={userData} />
+            <S.View>
+                <BasicButton onPress={handleToggledDataPress} bgColor="black">Toggle Data</BasicButton>
+            </S.View>
         </SafeAreaView>
     );
 }

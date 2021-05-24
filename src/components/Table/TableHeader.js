@@ -6,13 +6,12 @@ import styled from 'styled-components/native';
 
 const S = {};
 
-
 S.TableHeaderGrid = styled(Grid)`
     max-height: 80px;
 `;
 
 S.TableHeaderRow = styled(Row)`
-    background-color: #1b2639;
+    background-color: black;
 `;
 
 S.TableHeaderCol = styled(Col)`
@@ -21,6 +20,7 @@ S.TableHeaderCol = styled(Col)`
 `;
 
 S.TableHeaderText = styled.Text`
+    font-size: 18px;
     margin: auto auto auto 20px;
     color: #ffdd00;
 `;
