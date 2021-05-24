@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
-import { useSurveysEndpoint, useUserEndpoint} from './src/useApi';
+import styled from 'styled-components/native';
+import { usePrevious, useSurveysEndpoint, useUserEndpoint } from './src/hooks';
 import Table from './src/components/Table';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
-import { defaultTableFields } from './src/constants';
+import { surveyTableFields, userTableFields } from './src/constants';
 import BasicButton from './src/components/BasicButton';
 
 const S = {};
+
+S.View = styled.View`
+    flex-direction: row;
+`;
 
 function App() {
     // constants
@@ -30,10 +35,40 @@ function App() {
         }
     }, [surveyRecords, page]);
 
+    // handlers
+    const handleToggledDataPress = () => {
+        setToggled(prevToggled => !prevToggled);
+        setPage(0);
+    };
+
+    const handleNext = () => {
+        setPage(prevPagVal => {
+            if (prevPagVal === surveyRecords.length -1) {
+                return prevPagVal;
+            }
+            return ++prevPagVal;
+        })
+    }
+
+    const handlePrevious = () => {
+        setPage(prevPagVal => {
+            if (prevPagVal <= 0) {
+                return 0;
+            }
+            return --prevPagVal;
+        })
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <View></View>
-            <Table records={currentPage} fields={defaultTableFields} userData={userData} />
+            <S.View>
+                <BasicButton onPress={handleToggledDataPress}>Toggled Data</BasicButton>
+            </S.View>
+            <S.View>
+                <BasicButton onPress={handlePrevious}>previous</BasicButton>
+                <BasicButton onPress={handleNext}>next</BasicButton>
+            </S.View>
+            <Table records={currentPage} fields={surveyTableFields} keyField="ID" userData={userData} />
         </SafeAreaView>
     );
 }

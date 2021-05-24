@@ -18,7 +18,7 @@ S.Text = styled.Text`
     color: black;
 `;
 
-function Table({ fields: specifiedFields, fieldForId, includeHeader, records, userData }) {
+function Table({ fields: specifiedFields, keyField, includeHeader, records, userData }) {
     const shouldUseRecordFieldsAsHeaders = !specifiedFields && records[0];
     const fields = shouldUseRecordFieldsAsHeaders ? Object.keys(records[0]) : specifiedFields;
     const shouldBeColHeaders = fields && includeHeader;
@@ -29,8 +29,7 @@ function Table({ fields: specifiedFields, fieldForId, includeHeader, records, us
                 <S.Text>{record[field]}</S.Text>
             </S.Col>
         ));
-        console.log(fieldForId)
-        return <Row key={record[fieldForId]}>{cells}</Row>;
+        return <Row key={record[keyField]}>{cells}</Row>;
     });
 
     return (
@@ -53,13 +52,13 @@ const styles = StyleSheet.create({
 
 Table.defaultProps = {
     fields: null,
-    fieldForId: 'id',
+    keyField: 'id',
     includeHeader: true,
 };
 
 Table.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.string),
-    fieldForId: PropTypes.string,
+    keyField: PropTypes.string,
     includeHeader: PropTypes.bool,
     records: PropTypes.arrayOf(PropTypes.object).isRequired,
     userData: PropTypes.object.isRequired,
