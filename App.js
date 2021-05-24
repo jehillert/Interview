@@ -41,28 +41,22 @@ function App() {
         setPage(0);
     };
 
-    const handleNext = () => {
-        setPage(prevPagVal => {
-            if (prevPagVal === surveyRecords.length -1) {
-                return prevPagVal;
-            }
-            return ++prevPagVal;
-        })
-    }
+    // const handleNext = () => {
+    //     setPage(prevPagVal => {
+    //         if (prevPagVal === surveyRecords.length -1) {
+    //             return prevPagVal;
+    //         }
+    //         return ++prevPagVal;
+    //     })
+    // }
 
-    const handlePrevious = () => {
-        setPage(prevPagVal => {
-            if (prevPagVal <= 0) {
-                return 0;
-            }
-            return --prevPagVal;
-        })
-    }
+    const handleNext = () => setPage(p => p < Math.ceil(surveyRecords.length / resultsPerPage ) ? ++p : p);
+    const handlePrevious = () => setPage(p => p > 0 ? --p : p);
 
     return (
         <SafeAreaView style={styles.container}>
             <S.View>
-                <BasicButton onPress={handleToggledDataPress}>Toggled Data</BasicButton>
+                <BasicButton onPress={handleToggledDataPress}>Toggle Data</BasicButton>
             </S.View>
             <S.View>
                 <BasicButton onPress={handlePrevious}>previous</BasicButton>
