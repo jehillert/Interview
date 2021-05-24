@@ -10,24 +10,29 @@ S.ColumnHeaderGrid = styled(Grid)`
 `;
 
 S.ColumnHeaderCol = styled(Col)`
-    padding: 20px;
+    padding: 5px;
     background-color: green;
+    border: darkgreen 1px;
 `;
 
 S.ColumnHeaderText = styled.Text`
     font-weight: bold;
     color: white;
-    /* font-size: 14px; */
+    font-size: 13px;
+    margin: auto;
 `;
 
 function ColumnHeaders({ fields }) {
+    const camelToTitleCase = str => str.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, " $1");
+    const headers = fields.map(field => camelToTitleCase(field));
+
     return (
         <S.ColumnHeaderGrid>
             {fields ? (
                 <Row>
-                    {fields.map(field => (
-                        <S.ColumnHeaderCol key={`${field}-header`}>
-                            <S.ColumnHeaderText>{field}</S.ColumnHeaderText>
+                    {headers.map(header => (
+                        <S.ColumnHeaderCol key={`${header}-header`}>
+                            <S.ColumnHeaderText>{header}</S.ColumnHeaderText>
                         </S.ColumnHeaderCol>
                     ))}
                 </Row>
