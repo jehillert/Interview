@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
+import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
 import Table from './src/components/Table';
 import cloneDeep from 'lodash/cloneDeep';
@@ -90,6 +90,7 @@ function App() {
                     Toggle Data
                 </BasicButton>
             </S.View>
+            <StatusBar style="dark" />
         </SafeAreaView>
     );
 }
@@ -97,7 +98,7 @@ function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: StatusBar.currentHeight,
+        backgroundColor: "lightgreen",
     },
 });
 
