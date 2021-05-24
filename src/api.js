@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@env';
+import { API_BASE_URL, USER_EMAIL, USER_PASSWORD } from '@env';
 
 // AXIOS CONFIG
 axios.defaults.baseURL = `${API_BASE_URL}/`;
@@ -7,8 +7,8 @@ axios.defaults.baseURL = `${API_BASE_URL}/`;
 // API REQUESTS
 const getToken = () => {
     const body = {
-        email: 'test@test.com',
-        password: 'letmein',
+        email: USER_EMAIL,
+        password: USER_PASSWORD,
     };
 
     return axios
