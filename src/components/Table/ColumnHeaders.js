@@ -6,13 +6,13 @@ import styled from 'styled-components/native';
 const S = {};
 
 S.ColumnHeaderGrid = styled(Grid)`
-    max-height: 80px;
+    max-height: 30px;
 `;
 
 S.ColumnHeaderCol = styled(Col)`
     padding: 5px;
     background-color: green;
-    border: darkgreen 1px;
+    border: grey 0.5px;
 `;
 
 S.ColumnHeaderText = styled.Text`
