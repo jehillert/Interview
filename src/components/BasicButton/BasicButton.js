@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 
 const S = {};
@@ -7,7 +8,7 @@ S.TouchableOpacity = styled.TouchableOpacity`
     flex: 1;
     height: 70px;
     margin: 15px;
-    background: ${({ bgColor }) => (bgColor ? bgColor : 'darkgrey')};
+    background: ${({ bgColor }) => (bgColor ? bgColor : '#025331')};
 `;
 
 S.Text = styled.Text`
@@ -23,5 +24,20 @@ function BasicButton({ bgColor, fgColor, children, className, onPress }) {
         </S.TouchableOpacity>
     );
 }
+
+BasicButton.defaultProps = {
+    bgColor: null,
+    children: null,
+    className: '',
+    fgColor: '',
+};
+
+BasicButton.propTypes = {
+    bgColor: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    fgColor: PropTypes.string,
+    onPress: PropTypes.func.isRequired,
+};
 
 export default BasicButton;
