@@ -1,1 +1,1 @@
-export const defaultTableFields = ['FirstName', 'LastName', 'ProviderEmail', 'Review', 'Rating'];
+export const defaultTableFields = ['FirstName', 'LastName', 'Review', 'Rating'];

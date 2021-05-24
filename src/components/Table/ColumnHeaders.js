@@ -17,6 +17,7 @@ S.ColumnHeaderCol = styled(Col)`
 S.ColumnHeaderText = styled.Text`
     font-weight: bold;
     color: white;
+    /* font-size: 14px; */
 `;
 
 function ColumnHeaders({ fields }) {

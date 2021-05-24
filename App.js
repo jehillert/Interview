@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
-import useApiResult from './src/hooks/useApiResult';
+import { useSurveysEndpoint, useAuthEndpoint} from './src/hooks/useApi';
 import Table from './src/components/Table';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
 import { defaultTableFields } from './src/constants';
@@ -10,9 +10,14 @@ const S = {};
 function App() {
     const userData = { firstName, username };
     const resultsPerPage = 10;
-    const allResults = useApiResult();
+    const allResults = useSurveysEndpoint();
+    const token = useAuthEndpoint();
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState([]);
+
+    useEffect(() => {
+        console.log(token);
+    }, [token]);
 
     useEffect(() => {
         if (allResults.length) {
