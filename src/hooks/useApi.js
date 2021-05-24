@@ -6,9 +6,6 @@ export function useUserEndpoint() {
 
     useEffect(() => {
         getUserRecords().then(data => setUserRecords(data));
-        // userRecords.forEach(value => {
-        //     console.log(value.username);
-        // })
     }, []);
 
     return userRecords;
@@ -22,14 +19,4 @@ export function useSurveysEndpoint() {
     }, []);
 
     return surveyRecords;
-}
-
-// unused
-export function useAuthEndpoint() {
-    const [token, setToken] = useState(null);
-
-    useEffect(() => {
-        getToken().then(token => setToken(token));
-    }, []);
-    return token;
 }

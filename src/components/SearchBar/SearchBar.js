@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     searchBar: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         borderColor: '#b6b6b6',
         borderStyle: 'solid',
         borderTopWidth: 1,
