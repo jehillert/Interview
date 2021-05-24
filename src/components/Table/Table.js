@@ -31,7 +31,7 @@ function Table({ fields: specifiedFields, keyField, includeHeader, records, user
                 <S.Text>{record[field]}</S.Text>
             </S.Col>
         ));
-        return <Row key={record[keyField]}>{cells}</Row>;
+        return <Row key={`${record[keyField]}-${index}`}>{cells}</Row>;
     });
 
     return (
