@@ -66,16 +66,13 @@ function App() {
     const handlePrevious = () => setPage(p => (p > 0 ? --p : p));
 
     const handleSubmitSearch = query => {
-        console.log('█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█')
-        console.log('query')
-        console.log('█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█')
         setSearchQuery(query);
     }
 
     return (
         <SafeAreaView style={styles.container} color="black">
             <SearchBar
-                onSubmitEditing={handleSubmitSearch}
+                onSubmitQuery={handleSubmitSearch}
                 placeholder={'Search...'}
                 returnKeyType={'search'}
                 autoCorrect={false}

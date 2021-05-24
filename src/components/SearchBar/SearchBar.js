@@ -1,5 +1,5 @@
 // adapted from: https://github.com/ananddayalan/react-native-material-design-searchbar/blob/master/SearchBar.js
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, StyleSheet, View, TouchableOpacity, ActivityIndicator, Text, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         borderColor: '#b6b6b6',
         borderStyle: 'solid',
-        borderWidth: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
     },
     searchBarInput: {
         flex: 1,
@@ -22,13 +23,8 @@ const styles = StyleSheet.create({
 });
 
 function SearchBar({
-    onBlur,
-    onClear,
-    onFocus,
     onBackPress,
-    onEndEditing,
-    onSearchChange,
-    onSubmitEditing,
+    onSubmitQuery,
     alwaysShowBackButton,
     autoCorrect,
     height,
@@ -54,46 +50,39 @@ function SearchBar({
     iconPadding = typeof iconPadding !== 'undefined' ? iconPadding : height * 0.25;
 
     const textInputRef = useRef(null);
-    const [isOnFocus, setIsOnFocus] = useState(false);
-    const [searchValue, setSearchValue] = useState(searchValue);
+    const [isFocused, setIsFocused] = useState(false);
+    const [query, setQuery] = useState('');
 
-    const handleSearchChange = searchValue => {
-        setSearchValue({ searchValue });
-        onSearchChange && onSearchChange(searchValue);
+    useEffect(() => {
+        textInputRef.current.setNativeProps({ text: query });
+    }, [query]);
+
+    const handleSearchChange = query => {
+        setQuery(query);
     };
 
     const handleClear = () => {
-        this.onSearchChange('');
-        onClear && onClear();
+        handleSearchChange('');
     };
 
     const handleFocus = () => {
-        setIsOnFocus(true);
-        if (onFocus) {
-            onFocus();
-        }
+        setIsFocused(true);
+        setQuery('');
     };
 
     const handleBlur = () => {
-        setIsOnFocus(false);
-        if (onBlur) {
-            onBlur();
-        }
+        setIsFocused(false);
         Keyboard.dismiss();
+        setQuery('');
     };
 
     const handleBackPress = () => {
         Keyboard.dismiss();
-        if (onBackPress) {
-            onBackPress();
-        }
+        onBackPress();
     };
 
-    const setText = (text, focus) => {
-        textInputRef.current.setNativeProps({ text: text });
-        if (focus) {
-            onFocus();
-        }
+    const handleQuerySubmit = () => {
+        onSubmitQuery(query);
     };
 
     return (
@@ -107,7 +96,7 @@ function SearchBar({
                     },
                     inputStyle,
                 ]}>
-                {isOnFocus || alwaysShowBackButton ? (
+                {isFocused || alwaysShowBackButton ? (
                     <TouchableOpacity onPress={handleBackPress}>
                         {iconBackComponent ? (
                             iconBackComponent
@@ -122,15 +111,13 @@ function SearchBar({
                 )}
                 <TextInput
                     ref={textInputRef}
-                    // ref={c => (textInput = c)}
-                    value={searchValue}
+                    value={query}
                     autoCorrect={autoCorrect === true}
                     returnKeyType={returnKeyType}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    onChangeText={onSearchChange}
-                    onEndEditing={onEndEditing}
-                    onSubmitEditing={onSubmitEditing}
+                    onChangeText={handleSearchChange}
+                    onSubmitEditing={() => handleQuerySubmit(query)}
                     placeholder={placeholder}
                     placeholderTextColor={placeholderColor}
                     underlineColorAndroid="transparent"
@@ -144,8 +131,8 @@ function SearchBar({
                     ]}
                     {...inputProps}
                 />
-                {isOnFocus ? (
-                    <TouchableOpacity onPress={onClear}>
+                {isFocused ? (
+                    <TouchableOpacity onPress={handleClear}>
                         {iconCloseComponent ? (
                             iconCloseComponent
                         ) : (
@@ -164,12 +151,8 @@ function SearchBar({
 }
 
 SearchBar.defaultProps = {
-    onBlur: () => {},
-    onClear: () => {},
-    onFocus: () => {},
-    onSearchChange: () => {},
-    onEndEditing: () => {},
-    onSubmitEditing: () => {},
+    onBackPress: () => {},
+    onSubmitQuery: () => {},
     alwaysShowBackButton: false,
     iconBackName: 'md-arrow-back',
     iconCloseName: 'md-close',
@@ -180,18 +163,13 @@ SearchBar.defaultProps = {
     placeholder: 'Search...',
     placeholderColor: '#bdbdbd',
     returnKeyType: 'search',
-    searchValue: '',
+    query: '',
     textStyle: {},
 };
 
 SearchBar.propTypes = {
-    onBlur: PropTypes.func,
-    onClear: PropTypes.func,
-    onFocus: PropTypes.func,
     onBackPress: PropTypes.func,
-    onEndEditing: PropTypes.func,
-    onSearchChange: PropTypes.func,
-    onSubmitEditing: PropTypes.func,
+    onSubmitQuery: PropTypes.func,
     alwaysShowBackButton: PropTypes.bool,
     autoCorrect: PropTypes.bool,
     height: PropTypes.number.isRequired,
