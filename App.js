@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
-import { getUserData, useSurveysEndpoint, useAuthEndpoint} from './src/hooks/useApi';
+import { getUserData, useAuthEndpoint, useSurveysEndpoint, useUserEndpoint} from './src/hooks/useApi';
 import Table from './src/components/Table';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
 import { defaultTableFields } from './src/constants';
@@ -15,16 +15,21 @@ function App() {
     // API-dependent state
     const allResults = useSurveysEndpoint();
     const token = useAuthEndpoint();
+    const usersData = useUserEndpoint();
 
     // local state
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState([]);
 
     useEffect(() => {
+        console.log('DO I HAVE IT YET?')
+        if (usersData) {
+            console.log(usersData);
+        }
         if (token) {
             getUserData(token);
         }
-    }, [token]);
+    }, [token, usersData]);
 
     useEffect(() => {
         if (allResults.length) {

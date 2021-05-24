@@ -24,13 +24,15 @@ const getSurveyData = () => axios
     .catch(err => console.error(err));
 
 export function getUserData(token) {
+    console.log('███████████████████████████████████████████████████████████████████████████████');
+    console.log(token);
     if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        axios.get(`users`)
-            .then(({ data }) => console.log(data))
+        return axios.get(`users`)
+            .then(({ data }) => data)
             .catch(err => console.error(err));
     }
-    console.log(axios.defaults.headers.common)
+    // console.log(axios.defaults.headers.common)
 }
 
 // HOOKS CONSUMING API
@@ -38,9 +40,7 @@ export function useSurveysEndpoint() {
     const [surveyData, setSurveyData] = useState([]);
 
     useEffect(() => {
-        if (!surveyData.length) {
             getSurveyData().then(data => setSurveyData(data));
-        }
     }, []);
 
     return surveyData;
@@ -50,14 +50,18 @@ export function useAuthEndpoint() {
     const [token, setToken] = useState(null);
 
     useEffect(() => {
-        if (!token) {
-            getToken().then(token => setToken(token));
-        }
+        getToken().then(token => setToken(token));
     }, []);
-    console.log(token);
+    // console.log(token);
     return token;
 }
 
 export function useUserEndpoint() {
-    getToken().then(token => console.log(token))
+    const [userData, setUserData] = useState([]);
+
+    useEffect(() => {
+        getToken().then(token => getUserData(token).then(data => setUserData(data)))
+    }, []);
+
+    return userData;
 }
