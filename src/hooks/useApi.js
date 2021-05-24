@@ -23,6 +23,16 @@ const getSurveyData = () => axios
     .then(({ data }) => data)
     .catch(err => console.error(err));
 
+export function getUserData(token) {
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axios.get(`users`)
+            .then(({ data }) => console.log(data))
+            .catch(err => console.error(err));
+    }
+    console.log(axios.defaults.headers.common)
+}
+
 // HOOKS CONSUMING API
 export function useSurveysEndpoint() {
     const [surveyData, setSurveyData] = useState([]);
@@ -44,7 +54,7 @@ export function useAuthEndpoint() {
             getToken().then(token => setToken(token));
         }
     }, []);
-
+    console.log(token);
     return token;
 }
 
