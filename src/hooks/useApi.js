@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { getSurveyRecords, getToken, getUserRecords } from './api';
+import { getSurveyRecords, getToken, getUserRecords } from '../api';
 
 export function useUserEndpoint() {
     const [userRecords, setUserRecords] = useState([]);
 
     useEffect(() => {
         getUserRecords().then(data => setUserRecords(data));
+        // userRecords.forEach(value => {
+        //     console.log(value.username);
+        // })
     }, []);
 
     return userRecords;
@@ -15,7 +18,7 @@ export function useSurveysEndpoint() {
     const [surveyRecords, setSurveyRecords] = useState([]);
 
     useEffect(() => {
-            getSurveyRecords().then(data => setSurveyRecords(data));
+        getSurveyRecords().then(data => setSurveyRecords(data));
     }, []);
 
     return surveyRecords;
