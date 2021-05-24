@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
 import styled from 'styled-components/native';
-import { usePrevious, useSurveysEndpoint, useUserEndpoint } from './src/hooks';
+import { useSurveysEndpoint, useUserEndpoint } from './src/hooks';
 import Table from './src/components/Table';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
 import { surveyTableFields, userTableFields } from './src/constants';
@@ -35,20 +35,10 @@ function App() {
         }
     }, [surveyRecords, page]);
 
-    // handlers
     const handleToggledDataPress = () => {
         setToggled(prevToggled => !prevToggled);
         setPage(0);
     };
-
-    // const handleNext = () => {
-    //     setPage(prevPagVal => {
-    //         if (prevPagVal === surveyRecords.length -1) {
-    //             return prevPagVal;
-    //         }
-    //         return ++prevPagVal;
-    //     })
-    // }
 
     const handleNext = () => setPage(p => p < Math.ceil(surveyRecords.length / resultsPerPage ) ? ++p : p);
     const handlePrevious = () => setPage(p => p > 0 ? --p : p);
