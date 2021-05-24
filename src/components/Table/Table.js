@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
+import { StyleSheet, ScrollView } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import styled from 'styled-components/native';
 import ColumnHeaders from './ColumnHeaders';
@@ -18,7 +18,7 @@ S.Text = styled.Text`
     color: black;
 `;
 
-function Table({ fields: specifiedFields, includeHeader, records, userData }) {
+function Table({ fields: specifiedFields, fieldForId, includeHeader, records, userData }) {
     const shouldUseRecordFieldsAsHeaders = !specifiedFields && records[0];
     const fields = shouldUseRecordFieldsAsHeaders ? Object.keys(records[0]) : specifiedFields;
     const shouldBeColHeaders = fields && includeHeader;
@@ -29,7 +29,8 @@ function Table({ fields: specifiedFields, includeHeader, records, userData }) {
                 <S.Text>{record[field]}</S.Text>
             </S.Col>
         ));
-        return <Row key={record.ID}>{cells}</Row>;
+        console.log(fieldForId)
+        return <Row key={record[fieldForId]}>{cells}</Row>;
     });
 
     return (
@@ -52,11 +53,13 @@ const styles = StyleSheet.create({
 
 Table.defaultProps = {
     fields: null,
+    fieldForId: 'id',
     includeHeader: true,
 };
 
 Table.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.string),
+    fieldForId: PropTypes.string,
     includeHeader: PropTypes.bool,
     records: PropTypes.arrayOf(PropTypes.object).isRequired,
     userData: PropTypes.object.isRequired,
