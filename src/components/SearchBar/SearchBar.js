@@ -67,13 +67,11 @@ function SearchBar({
 
     const handleFocus = () => {
         setIsFocused(true);
-        setQuery('');
     };
 
     const handleBlur = () => {
         setIsFocused(false);
         Keyboard.dismiss();
-        setQuery('');
     };
 
     const handleBackPress = () => {
