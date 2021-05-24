@@ -8,6 +8,7 @@ import { surveyTableFields, userTableFields } from './src/constants';
 import BasicButton from './src/components/Table/BasicButton';
 import cloneDeep from 'lodash/cloneDeep';
 import { usePrevious } from './src/hooks';
+import SearchBar from './src/components/SearchBar';
 
 const S = {};
 
@@ -26,11 +27,12 @@ function App() {
 
     // local state
     const [toggle, setToggle] = useState(false);
-    const [keyField, setKeyField] = useState("ID");
+    const [keyField, setKeyField] = useState('ID');
     const [fields, setFields] = useState(surveyTableFields);
     const [records, setRecords] = useState([]);
     const [page, setPage] = useState(0);
     const [displayedRecords, setDisplayedRecords] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const prevToggle = usePrevious(toggle);
 
@@ -43,7 +45,7 @@ function App() {
     useEffect(() => {
         if (toggle !== prevToggle) {
             const newRecords = cloneDeep(toggle ? userRecords : surveyRecords);
-            setKeyField(toggle ? "username" : "ID");
+            setKeyField(toggle ? 'username' : 'ID');
             setFields(toggle ? userTableFields : surveyTableFields);
             setRecords(newRecords);
             setPage(0);
@@ -59,18 +61,36 @@ function App() {
         }
     }, [records, page]);
 
-    const handleNext = () => setPage(p => p < Math.ceil(surveyRecords?.length / resultsPerPage ) ? ++p : p);
-    const handlePrevious = () => setPage(p => p > 0 ? --p : p);
+    const handleNext = () => setPage(p => (p < Math.ceil(surveyRecords?.length / resultsPerPage) ? ++p : p));
+
+    const handlePrevious = () => setPage(p => (p > 0 ? --p : p));
+
+    const handleSubmitSearch = query => {
+        console.log('█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█')
+        console.log('query')
+        console.log('█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█▬█')
+        setSearchQuery(query);
+    }
 
     return (
-        <SafeAreaView style={styles.container} color="black" >
+        <SafeAreaView style={styles.container} color="black">
+            <SearchBar
+                onSubmitEditing={handleSubmitSearch}
+                placeholder={'Search...'}
+                returnKeyType={'search'}
+                autoCorrect={false}
+                height={50}
+                padding={0}
+            />
             <Table records={displayedRecords} fields={fields} keyField={keyField} userData={userData} />
             <S.View>
                 <BasicButton onPress={handlePrevious}>previous</BasicButton>
                 <BasicButton onPress={handleNext}>next</BasicButton>
             </S.View>
             <S.View>
-                <BasicButton onPress={() => setToggle(t => !t)} bgColor="#390202">Toggle Data</BasicButton>
+                <BasicButton onPress={() => setToggle(t => !t)} bgColor="#390202">
+                    Toggle Data
+                </BasicButton>
             </S.View>
         </SafeAreaView>
     );
