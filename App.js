@@ -5,7 +5,7 @@ import { useSurveysEndpoint, useUserEndpoint } from './src/hooks';
 import Table from './src/components/Table';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
 import { surveyTableFields, userTableFields } from './src/constants';
-import BasicButton from './src/components/BasicButton';
+import BasicButton from './src/components/Table/BasicButton';
 
 const S = {};
 
@@ -24,14 +24,14 @@ function App() {
 
     // local state
     const [page, setPage] = useState(0);
-    const [currentPage, setCurrentPage] = useState([]);
+    const [displayedRecords, setDisplayedRecords] = useState([]);
 
     useEffect(() => {
         if (surveyRecords.length) {
             const startIndex = page * resultsPerPage;
             const endIndex = (page + 1) * resultsPerPage;
 
-            setCurrentPage(surveyRecords.slice(startIndex, endIndex));
+            setDisplayedRecords(surveyRecords.slice(startIndex, endIndex));
         }
     }, [surveyRecords, page]);
 
@@ -52,7 +52,7 @@ function App() {
                 <BasicButton onPress={handlePrevious}>previous</BasicButton>
                 <BasicButton onPress={handleNext}>next</BasicButton>
             </S.View>
-            <Table records={currentPage} fields={surveyTableFields} keyField="ID" userData={userData} />
+            <Table records={displayedRecords} fields={surveyTableFields} keyField="ID" userData={userData} />
         </SafeAreaView>
     );
 }
