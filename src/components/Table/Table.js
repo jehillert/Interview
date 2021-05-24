@@ -12,6 +12,8 @@ S.Grid = styled(Grid)``;
 
 S.Col = styled(Col)`
     background-color: lightgreen;
+    border: white 0.5px;
+    padding: 5px;
 `;
 
 S.Text = styled.Text`
