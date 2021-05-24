@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
 import styled from 'styled-components/native';
-import { useSurveysEndpoint, useUserEndpoint } from './src/hooks';
 import Table from './src/components/Table';
+import cloneDeep from 'lodash/cloneDeep';
+import BasicButton from './src/components/Table/BasicButton';
+import SearchBar from './src/components/SearchBar';
+import { usePrevious, useSearchLogic, useSurveysEndpoint, useUserEndpoint } from './src/hooks';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
 import { surveyTableFields, userTableFields } from './src/constants';
-import BasicButton from './src/components/Table/BasicButton';
-import cloneDeep from 'lodash/cloneDeep';
-import { usePrevious } from './src/hooks';
-import SearchBar from './src/components/SearchBar';
 
 const S = {};
 
@@ -35,6 +34,8 @@ function App() {
     const [searchQuery, setSearchQuery] = useState('');
 
     const prevToggle = usePrevious(toggle);
+
+    useSearchLogic(searchQuery, records, setRecords);
 
     useEffect(() => {
         if (surveyRecords?.length) {
