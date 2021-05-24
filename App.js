@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
-import { getUserData, useAuthEndpoint, useSurveysEndpoint, useUserEndpoint} from './src/hooks/useApi';
+import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
+import { useSurveysEndpoint, useUserEndpoint} from './src/useApi';
 import Table from './src/components/Table';
 import { USER_FIRSTNAME as firstName, USER_USERNAME as username } from '@env';
 import { defaultTableFields } from './src/constants';
+import BasicButton from './src/components/BasicButton';
 
 const S = {};
 
@@ -13,36 +14,25 @@ function App() {
     const resultsPerPage = 10;
 
     // API-dependent state
-    const allResults = useSurveysEndpoint();
-    const token = useAuthEndpoint();
-    const usersData = useUserEndpoint();
+    const surveyRecords = useSurveysEndpoint();
+    const userRecords = useUserEndpoint();
 
     // local state
     const [page, setPage] = useState(0);
     const [currentPage, setCurrentPage] = useState([]);
 
     useEffect(() => {
-        console.log('DO I HAVE IT YET?')
-        if (usersData) {
-            console.log(usersData);
-        }
-        if (token) {
-            getUserData(token);
-        }
-    }, [token, usersData]);
-
-    useEffect(() => {
-        if (allResults.length) {
+        if (surveyRecords.length) {
             const startIndex = page * resultsPerPage;
             const endIndex = (page + 1) * resultsPerPage;
 
-            // TODO: make sure to account for last set of paginated results
-            setCurrentPage(allResults.slice(startIndex, endIndex));
+            setCurrentPage(surveyRecords.slice(startIndex, endIndex));
         }
-    }, [allResults, page]);
+    }, [surveyRecords, page]);
 
     return (
         <SafeAreaView style={styles.container}>
+            <View></View>
             <Table records={currentPage} fields={defaultTableFields} userData={userData} />
         </SafeAreaView>
     );
