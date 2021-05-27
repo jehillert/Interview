@@ -1,29 +1,38 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import cloneDeep from 'lodash/cloneDeep';
-import * as data from '../test-data';
+import usePrevious from './usePrevious';
+import { largeSurveyData } from '../test-data';
 
-const getRecordsWithExactMatch = (records, str) => {
-    return cloneDeep(
-        records.filter(record => Object.values(record).some(value => String(value).includes(str)))
-    );
-}
+const getRecordsWithExactMatch = (records, queryString = '') => {
+    if (queryString === '') {
+        return [];
+    }
+    const str = queryString.toLowerCase();
+    return cloneDeep(records.filter(record => Object.values(record).some(value => String(value).toLowerCase().includes(str))));
+};
 
-function useSearchLogic(searchQuery, records, setRecordsCallback) {
-    let newRecords = [];
-    const ref = useRef();
-
-    useEffect(() => {
-        newRecords = getRecordsWithExactMatch(records, searchQuery);
-        setRecordsCallback(newRecords);
-    }, [searchQuery]);
+function useSearchLogic(records, searchQuery) {
+    const [searchResults, setSearchResults] = useState([]);
+    const prevSearchQuery = usePrevious(searchQuery);
 
     useEffect(() => {
-        // console.log(records);
-    }, [records]);
+        if (prevSearchQuery !== searchQuery) {
+            console.log(`searchQuery: ${searchQuery}`)
+            console.log(`prevSearchQuery: ${prevSearchQuery}`)
+            if (searchQuery === '') {
+                setSearchResults([]);
+            } else if (records.length && searchQuery) {
+                const newSearchResults = getRecordsWithExactMatch(records, searchQuery);
+                console.log(newSearchResults);
+                setSearchResults(newSearchResults);
+            }
+        }
+    }, [/* prevSearchQuery, records, searchResults, setSearchResults,  */searchQuery]);
+
+    return searchResults;
 }
 
 export default useSearchLogic;
 
-const testData = data.smallUserData;
-const testStr = '9521';
-console.log(getRecordsWithExactMatch(testData, testStr));
+// const testStr = 'ayesh';
+// console.log(getRecordsWithExactMatch(largeSurveyData, testStr));

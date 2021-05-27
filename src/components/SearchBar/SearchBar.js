@@ -63,6 +63,7 @@ function SearchBar({
 
     const handleClear = () => {
         handleSearchChange('');
+        onSubmitQuery('');
     };
 
     const handleFocus = () => {
@@ -76,7 +77,8 @@ function SearchBar({
 
     const handleBackPress = () => {
         Keyboard.dismiss();
-        onBackPress();
+        handleSearchChange('');
+        onBackPress('');
     };
 
     const handleQuerySubmit = () => {

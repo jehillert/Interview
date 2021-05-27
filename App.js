@@ -30,12 +30,15 @@ function App() {
     const [fields, setFields] = useState(surveyTableFields);
     const [records, setRecords] = useState([]);
     const [page, setPage] = useState(0);
-    const [displayedRecords, setDisplayedRecords] = useState([]);
+    const [pageRecords, setPageRecords] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
     const prevToggle = usePrevious(toggle);
+    const searchResults = useSearchLogic(records, searchQuery);
 
-    useSearchLogic(searchQuery, records, setRecords);
+    useEffect(() => {
+        console.log(`SEARCH RESULTS:     ${JSON.stringify(searchResults, undefined, 2)}`)
+    }, [searchResults]);
 
     useEffect(() => {
         if (surveyRecords?.length) {
@@ -54,13 +57,14 @@ function App() {
     }, [prevToggle, toggle, surveyRecords, userRecords]);
 
     useEffect(() => {
+        const recordsToPaginate = !!searchQuery ? searchResults : records;
         if (records?.length) {
             const startIndex = page * resultsPerPage;
             const endIndex = (page + 1) * resultsPerPage;
 
-            setDisplayedRecords(records.slice(startIndex, endIndex));
+            setPageRecords(recordsToPaginate.slice(startIndex, endIndex));
         }
-    }, [records, page]);
+    }, [page, records, searchQuery]);
 
     const handleNext = () => setPage(p => (p < Math.ceil(surveyRecords?.length / resultsPerPage) ? ++p : p));
 
@@ -74,13 +78,14 @@ function App() {
         <SafeAreaView style={styles.container} color="black">
             <SearchBar
                 onSubmitQuery={handleSubmitSearch}
+                onBackPress={handleSubmitSearch}
                 placeholder={'Search...'}
                 returnKeyType={'search'}
                 autoCorrect={false}
                 height={50}
                 padding={0}
             />
-            <Table records={displayedRecords} fields={fields} keyField={keyField} userData={userData} />
+            <Table records={pageRecords} fields={fields} keyField={keyField} userData={userData} />
             <S.View>
                 <BasicButton onPress={handlePrevious}>previous</BasicButton>
                 <BasicButton onPress={handleNext}>next</BasicButton>
